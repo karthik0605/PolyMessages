@@ -5,13 +5,13 @@ import "./Channel.css";
 
 //add MessageList when needed
 //maybe update contactName to be the whole user object?
-function Channel({ contactName }) {
+function Channel({ user, contactName }) {
   return (
     <>
       <div className="channel">
         <div className="channel-contents">
           <ContactHeader name={contactName} />
-          <MessageList />
+          <MessageList user={user} />
         </div>
       </div>
       <MessageInput />
@@ -36,7 +36,7 @@ function ContactHeader({ name }) {
 }
 
 //again will do messaging in database once set up
-function MessageList(props) {
+function MessageList({ user }) {
   const messages = [
     {
       id: 1,
@@ -96,7 +96,12 @@ function MessageList(props) {
   return (
     <div className="message-list">
       {messages.map((message) => (
-        // <MessageItem key={message.id} message={message} />
+        /*
+        prevDate = message.timestamp
+        if date was over a day ago
+          <timestamp component />
+        */
+        /* <Message key={message.id} user={user} message={message} */
         <Message key={message.id} user={"John"} message={message} />
       ))}
     </div>
@@ -112,6 +117,7 @@ function Message({ user, message }) {
 
   return (
     <>
+      {/* div: className={`message ${message.sender === user._id ? "sent" : "received"}`} */}
       <div
         className={`message ${message.sender === user ? "sent" : "received"}`}
       >

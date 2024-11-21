@@ -3,6 +3,7 @@ import Sidebar from "./Components/Sidebar";
 import Profile from "./Components/Prof/Profile";
 import Channel from "./Components/Channel";
 import Search from "./Components/Search";
+import jwt from "jsonwebtoken";
 
 // Enum for the different page views on the app
 const View = Object.freeze({
@@ -27,6 +28,22 @@ function Home() {
     const prev = currentView;
     setPreviousView(prev);
     setCurrentView(view);
+  };
+
+  const getUser = () => {
+    jwt.verify(
+      localStorage.getItem("token"),
+      process.env.JWT_SECRET,
+      (err, user) => {
+        if (err) {
+          return res.status(403).json({ message: "Invalid token." });
+        }
+        return res.status(400).json({ user: user });
+        // req.user = user; // Attach the user payload to the request object
+      }
+    );
+    if (res.user) return res.user;
+    // handle error...
   };
 
   return (
@@ -55,7 +72,7 @@ function Home() {
         {currentView === View.CHANNEL && (
           <>
             <h2 className="page-header">{selectedContact}</h2>
-            <Channel contactName={selectedContact} />
+            <Channel user={getUser} contactName={selectedContact} />
           </>
         )}
         {currentView === View.SEARCH && (
