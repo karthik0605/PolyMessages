@@ -13,7 +13,7 @@ const View = Object.freeze({
 });
 
 function Home() {
-  const [selectedContact, setSelectedContact] = useState("John");
+  const [selectedChannel, setSelectedChannel] = useState({});
   /*
   set the default view to home/default once that gets made
   profile and search will have back navigation, home and channel won't
@@ -39,7 +39,7 @@ function Home() {
       </div>
       <Sidebar
         onSelectContact={(name) => {
-          setSelectedContact(name);
+          setSelectedChannel(name);
           handleSelectView(View.CHANNEL);
         }}
         onSelectSearch={() => handleSelectView(View.SEARCH)}
@@ -51,8 +51,8 @@ function Home() {
         )}
         {currentView === View.CHANNEL && (
           <>
-            <h2 className="page-header">{selectedContact}</h2>
-            <Channel contactName={selectedContact} />
+            <h2 className="page-header">{selectedChannel.name}</h2>
+            <Channel channel={selectedChannel} />
           </>
         )}
         {currentView === View.SEARCH && (
